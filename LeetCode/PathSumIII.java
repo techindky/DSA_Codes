@@ -13,24 +13,33 @@
  *     }
  * }
  */
+
 class Solution {
-    public int pathSum(TreeNode root, int sum) {
-        HashMap<Integer, Integer> preSum = new HashMap();
-        preSum.put(0, 1);
-        return helper(root, 0, sum, preSum);
+    public int pathSum(TreeNode root, int targetSum) {
+        Map<Long, Integer> prefix = new HashMap<>();
+        prefix.put(0L, 1); // empty path prefix
+        return dfs(root, 0L, targetSum, prefix);
     }
 
-    public int helper(TreeNode root, int currSum, int target, HashMap<Integer, Integer> preSum) {
-        if (root == null) {
-            return 0;
-        }
+    private int dfs(TreeNode node, long curr, int target, Map<Long, Integer> prefix) {
+        if (node == null) return 0;
 
-        currSum += root.val;
-        int res = preSum.getOrDefault(currSum - target, 0);
-        preSum.put(currSum, preSum.getOrDefault(currSum, 0) + 1);
+        curr += node.val;
 
-        res += helper(root.left, currSum, target, preSum) + helper(root.right, currSum, target, preSum);
-        preSum.put(currSum, preSum.get(currSum) - 1);
+        // count paths ending at this node with sum == target
+        int res = prefix.getOrDefault(curr - target, 0);
+
+        // add current prefix
+        prefix.put(curr, prefix.getOrDefault(curr, 0) + 1);
+
+        // explore children
+        res += dfs(node.left, curr, target, prefix);
+        res += dfs(node.right, curr, target, prefix);
+
+        // backtrack: remove current prefix before returning to parent
+        prefix.put(curr, prefix.get(curr) - 1);
+        if (prefix.get(curr) == 0) prefix.remove(curr);
+
         return res;
     }
 }
