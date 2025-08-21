@@ -1,21 +1,29 @@
+import java.util.*;
+
 class Solution {
     public int minEatingSpeed(int[] piles, int h) {
-        int left = 1;
-        int right = 1000000000;
-        
-        while(left <= right){
-            int mid = left + (right - left) / 2;
-            if(canEatInTime(piles, mid, h)) right = mid - 1;
-            else left = mid + 1;
+        int max = 0;
+        for (int p : piles) max = Math.max(max, p);
+
+        int lo = 1, hi = max, ans = max;
+        while (lo <= hi) {
+            int mid = lo + (hi - lo) / 2;
+            if (canFinish(piles, h, mid)) {
+                ans = mid;
+                hi = mid - 1; // try smaller k
+            } else {
+                lo = mid + 1; // need larger k
+            }
         }
-        return left;
+        return ans;
     }
-    public boolean canEatInTime(int piles[], int k, int h){
-        int hours = 0;
-        for(int pile : piles){
-            int div = pile / k;
-            hours += div;
-            if(pile % k != 0) hours++;
+
+    private boolean canFinish(int[] piles, int h, int k) {
+        long hours = 0;
+        for (int p : piles) {
+            // ceil(p / k) without floating point
+            hours += (p + k - 1) / k;
+            if (hours > h) return false; // early stop
         }
         return hours <= h;
     }
