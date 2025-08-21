@@ -1,6 +1,6 @@
 class Solution {
     public int maxProfit(int[] prices, int fee) {
-        int hold = -prices;
+        int hold = 0 - prices[0];
         int cash = 0;
 
         for (int i = 1; i < prices.length; i++) {
