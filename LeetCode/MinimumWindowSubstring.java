@@ -11,7 +11,7 @@ class Solution {
             need[c]++;
         }
 
-        int[] have = new int;
+        int[] have = new int[128];
         int formed = 0;
 
         int bestLen = Integer.MAX_VALUE, bestL = 0;
