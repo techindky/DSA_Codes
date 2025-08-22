@@ -7,7 +7,7 @@ class Solution {
         if (n > m) return res;
 
         int[] need = new int[26];
-        int[] have = new int;
+        int[] have = new int[26];
         for (char c : p.toCharArray()) need[c - 'a']++;
 
         // initialize first window
