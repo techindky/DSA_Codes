@@ -11,7 +11,7 @@ class Solution {
             sum += nums[i];
         }
         if (min == 0) return sum;
-        if (k % 2 == 1 && min < 101) {
+        if (k % 2 == 1) {
             sum -= 2 * min;
         }
         return sum;
